@@ -10,5 +10,6 @@ in GDScript are outside the scan. A `res://` symlink that escapes the project
 is reported as unsafe. Source scene symlinks are skipped.
 
 The parser recognizes quoted attributes on `[ext_resource ...]` lines; it is
-not a full Godot text format parser. Treat findings as leads to review, and
+not a full Godot text format parser. Semicolon comments are ignored outside
+quoted strings, including comments following declarations and references. Treat findings as leads to review, and
 use Godot's own import and scene checks before shipping.
