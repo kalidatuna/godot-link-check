@@ -24,7 +24,7 @@ def scan(project: Path, include_backups: bool = False) -> list[Finding]:
             if source.is_symlink():
                 continue
             try:
-                text = source.read_text(encoding="utf-8")
+                text = source.read_text(encoding="utf-8-sig")
             except (OSError, UnicodeError) as error:
                 findings.append(Finding(source.relative_to(project).as_posix(), 0, "read-error", str(error)))
                 continue
