@@ -11,7 +11,9 @@ including spacing around IDs. Function-like text inside strings is ignored.
 It does not run Godot, inspect binary `.res` or `.scn` files, resolve `uid://`
 paths, or know whether an imported asset is valid. Dynamic paths constructed
 in GDScript are outside the scan. A `res://` symlink that escapes the project
-is reported as unsafe. Source scene symlinks are skipped.
+is reported as unsafe. Source scene symlinks are skipped. Invalid paths,
+symlink loops, and path resolution failures produce `path-error` findings
+instead of aborting the scan.
 
 The parser recognizes quoted attributes and numeric IDs on `[ext_resource ...]`
 lines; it is not a full Godot text format parser. Semicolon comments are ignored
