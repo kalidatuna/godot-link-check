@@ -1,6 +1,8 @@
 # Scope and limits
 
-Godot Link Check reads `.tscn` and `.tres` files as text. It checks declared
+Godot Link Check reads `.tscn` and `.tres` files as UTF-8 text, with or without
+a leading byte order mark (BOM). Invalid UTF-8 produces a `read-error` finding.
+It checks declared
 external resource paths using the files currently on disk. It checks that
 `ExtResource("id")` references have an ID declared in the same file. Numeric
 IDs and `ExtResource(1)` references in Godot 3 format-2 files are also supported,
