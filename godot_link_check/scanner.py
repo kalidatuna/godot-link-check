@@ -15,7 +15,15 @@ def scan(project: Path, include_backups: bool = False) -> list[Finding]:
     if not include_backups:
         excluded.add("backups")
     findings: list[Finding] = []
-    for current, directories, files in os.walk(project, followlinks=False):
+
+    def report_walk_error(error: OSError) -> None:
+        directory = Path(error.filename) if error.filename else project
+        findings.append(Finding(directory.relative_to(project).as_posix(), 0,
+                                "read-error", str(error)))
+
+    for current, directories, files in os.walk(
+        project, followlinks=False, onerror=report_walk_error
+    ):
         directories[:] = sorted(name for name in directories if name not in excluded)
         for name in sorted(files):
             if Path(name).suffix not in {".tscn", ".tres"}:
