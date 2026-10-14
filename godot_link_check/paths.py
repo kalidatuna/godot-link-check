@@ -19,9 +19,12 @@ def check_paths(
         if not relative or ".." in parts or relative.startswith("/"):
             findings.append(Finding(relative_source, declaration.line, "unsafe-path", value))
             continue
-        target = (project / relative).resolve()
-        if not target.is_relative_to(project.resolve()):
-            findings.append(Finding(relative_source, declaration.line, "unsafe-path", value))
-        elif not target.is_file():
-            findings.append(Finding(relative_source, declaration.line, "missing-file", value))
+        try:
+            target = (project / relative).resolve()
+            if not target.is_relative_to(project.resolve()):
+                findings.append(Finding(relative_source, declaration.line, "unsafe-path", value))
+            elif not target.is_file():
+                findings.append(Finding(relative_source, declaration.line, "missing-file", value))
+        except (OSError, RuntimeError, ValueError) as error:
+            findings.append(Finding(relative_source, declaration.line, "path-error", f"{value}: {error}"))
     return findings
